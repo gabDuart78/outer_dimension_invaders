@@ -21,12 +21,9 @@ Yuu'll also need any C compiler and Make installed to compile the game.
 ```shell
     make all
 ```
-
-     
     5. Then run:
 ```shell
     make run
 ```
-
 
 That's it! The game should be ready to play. Enjoy! 
