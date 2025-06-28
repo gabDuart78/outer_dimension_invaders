@@ -20,6 +20,7 @@ OBJS = $(subst $(SRC_DIR)/,$(OBJ_DIR)/,$(SRCS:.c=.o))
 
 # Compile .c to .o in corresponding build dir 
 $(OBJ_DIR)/%.o : $(SRC_DIR)/%.c
+	@mkdir -p $(SCORES_DIR)
 	@mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) ${ALLEGRO_FLAGS} -c $< -o $@ $(OTHER_FLAGS)
 
