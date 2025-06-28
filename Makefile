@@ -50,6 +50,6 @@ zip: all
 # Clean all build artifacts
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
-	rm $(SCORES_DIR)/$(SCORES_FILE) 
+	rm -rf $(SCORES_DIR)
 
 .PHONY: all clean run
