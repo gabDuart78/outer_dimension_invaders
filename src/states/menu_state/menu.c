@@ -19,6 +19,7 @@
 #define OPTS_COUNT 3
 #define TITLE_SHADOW_OFFSET_X 5
 #define TITLE_SHADOW_OFFSET_Y 5
+#define GAME_TITLE "Outer Dimension Invaders"
 
 const char OPTIONS[OPTS_COUNT][100] = {"Press enter to Start", "Press H to score rank",
     "Press esc to exit"};
@@ -70,25 +71,25 @@ void draw_menu_options(int *current_y, ALLEGRO_COLOR text_color, int gap) {
 }
 
 void draw_menu_title(ALLEGRO_COLOR text_color, int *current_y) {
-    char *title = "Outer-dimension Invaders";
+    int max_line_width = 550;
 
     draw_wrapped_text(get_large_font(), al_map_rgb(40, 25, 45), SCREEN_WIDTH / 2 + TITLE_SHADOW_OFFSET_X, 
-        *current_y + TITLE_SHADOW_OFFSET_Y, 400, title, 0);
+        *current_y + TITLE_SHADOW_OFFSET_Y, max_line_width, GAME_TITLE, 0);
 
     draw_wrapped_text(get_large_font(), text_color, SCREEN_WIDTH / 2, *current_y, 
-        400, title, 0);
+        max_line_width, GAME_TITLE, 0);
 }
 
 void draw_menu() {
     ALLEGRO_COLOR text_color = al_map_rgb(255, 255, 255);
-    int current_y = 90;
+    int current_y = 100;
 
     al_clear_to_color(al_map_rgb(0, 0, 0));
     draw_background(get_background_manager());
 
     draw_menu_title(text_color, &current_y);
 
-    current_y += 200;
+    current_y += 170;
 
     draw_menu_options(&current_y, text_color, OPTIONS_GAP);
     
