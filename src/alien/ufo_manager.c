@@ -158,7 +158,7 @@ void draw_ufo(UFO *ufo) {
 void destroy_ufo(UFO *ufo) {
     if (!ufo) return;
     deactive_ufo(ufo);
-    if (ufo->animator != NULL) destroy_animator(ufo->animator);
-    if (ufo->sprite_sheet != NULL) al_destroy_bitmap(ufo->sprite_sheet);
+    if (ufo->animator) destroy_animator(ufo->animator);
+    if (ufo->sprite_sheet) al_destroy_bitmap(ufo->sprite_sheet);
     free(ufo);
 }
