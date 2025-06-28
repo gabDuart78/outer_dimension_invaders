@@ -18,12 +18,12 @@ Yuu'll also need any C compiler and Make installed to compile the game.
     2. If you downloaded as a .zip, unzip the archive.
     3. Open a terminal and navigate to the game directory.
     4. Run:
-```ruby
+```shell
     make all
 ```
      
     5. Then run:
-```ruby
+```shell
     make run
 ```
 
