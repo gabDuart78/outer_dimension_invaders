@@ -17,12 +17,12 @@ Yuu'll also need any C compiler and Make installed to compile the game.
     1. Download the source code. 
     2. If you downloaded as a .zip, unzip the archive.
     3. Open a terminal and navigate to the game directory.
-    4. Run
+    4. Run:
 ```
     make all
 ```
      
-    5. Then run
+    5. Then run:
 ```
     make run
 ```
