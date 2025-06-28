@@ -212,8 +212,13 @@ void draw_player(Player *p) {
 
 void destroy_player(Player *p) {
     if (!p) return;
+
     destroy_bullet_manager(p->bm);
-    al_destroy_bitmap(p->sprite);
+    destroy_animator(p->animator);
+
+    if (p->sprite)
+        al_destroy_bitmap(p->sprite);
+    
     free(p);
 }
 
