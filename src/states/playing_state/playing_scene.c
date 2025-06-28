@@ -112,7 +112,7 @@ void update_game() {
 void handle_game_input(ALLEGRO_EVENT event) {
     if (key_pressed(event, ALLEGRO_KEY_ESCAPE)) {
         reset_game_context();
-        exit_game_state_with_transition(STATE_MENU, true);
+        exit_game_state(STATE_MENU, true);
         return;
     }
 
@@ -126,6 +126,7 @@ void handle_game_input(ALLEGRO_EVENT event) {
 
 void draw_game() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
+
     draw_background(get_background_manager());
     draw_bullets(player->bm);
     draw_bullets(alien_manager->bm);
@@ -134,6 +135,7 @@ void draw_game() {
     draw_ufo(ufo);
     draw_explosions(explosion_manager);
     draw_ui(player->max_life, player->lifes, player->score);
+    
     al_flip_display();
 }
 
