@@ -23,17 +23,26 @@ typedef enum SoundID {
     SFX_GAME_OVER,
 } SoundID;
 
+/**
+ * @brief Estrutura utilizada para encapsular um ALLEGRO_SMAPLE.
+ */
 typedef struct SFX {
     ALLEGRO_SAMPLE *sfx;
     char path[PATH_MAX];
     ALLEGRO_SAMPLE_ID id;
 } SFX;
 
+/**
+ * @brief Estrutura utilizada para encapsular um ALLEGRO_AUDIO_STREAM.
+ */
 typedef struct Music {
     ALLEGRO_AUDIO_STREAM *music;
     char path[PATH_MAX];
 } Music;
 
+/**
+ * @brief Estrutura utilizada para armazenar todos os sons e músicas utilizados. 
+ */
 typedef struct SoundBank {
     SFX *player_shoot;
     SFX *player_hit;

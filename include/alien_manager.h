@@ -16,7 +16,6 @@ typedef struct Alien Alien;
 /**
  * @brief Enumeração dos tipos de aliens disponíveis no game.
  */
-
 typedef enum AlienType {
     TOXIC_ALIEN,
     RAGE_ALIEN,
