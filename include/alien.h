@@ -10,6 +10,9 @@ typedef struct ALLEGRO_BITMAP ALLEGRO_BITMAP;
 typedef struct BulletManager BulletManager;
 typedef struct Animator Animator;
 
+/**
+ * @brief Estrutura que representa um alien. 
+ */
 typedef struct Alien {
     Animator *animator;
     Point pos;
@@ -25,6 +28,9 @@ typedef struct Alien {
     int points;
 } Alien;
 
+/**
+ * @brief Estrutura utilizada para armazenar configurações para um alien. 
+ */
 typedef struct AlienConfig {
     Point pos;
     int width;
@@ -41,13 +47,13 @@ typedef struct AlienConfig {
 
 Alien create_alien(AlienConfig cfg, int id, int animation_frames, float animation_interval);
 
-void draw_alien(Alien *alien);
-
 void move_alien_horizontal(Alien *alien, MoveDir mov_dir, int amount);
 
 void move_alien_vertical(Alien *alien, MoveDir move_dir, int amount);
 
 void kill_alien(Alien *alien);
+
+void draw_alien(Alien *alien);
 
 void destroy_alien(Alien *alien);
 

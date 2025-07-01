@@ -14,6 +14,9 @@
 
 typedef struct BulletManager BulletManager;
 
+/**
+ * @brief Enumerção dos possíveis comando do player vindos do teclado. 
+ */
 typedef enum PlayerInput{
     INPUT_NONE,
     INPUT_MOVE_LEFT,
@@ -24,7 +27,10 @@ typedef enum PlayerInput{
     INPUT_STOP_SHOOT,
 } PlayerInput;
 
-typedef struct Player{
+/**
+ * @brief Estrutura usada para representar o player.
+ * */
+typedef struct Player {
     Point pos;
     int width;
     int height;

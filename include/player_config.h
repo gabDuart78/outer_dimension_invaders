@@ -6,6 +6,9 @@
 #include "utils.h"
 #include "bullet.h"
 
+/**
+ * @brief Estrutura usada para definir configurações para o player.
+ */
 typedef struct {
     int width;
     int height;

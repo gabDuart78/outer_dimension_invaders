@@ -6,6 +6,9 @@
 
 typedef struct ALLEGRO_BITMAP ALLEGRO_BITMAP;
 
+/**
+ * @brief Estrutura responsável por animar os sprites utilizados no game.
+ * */
 typedef struct Animator {
     int current_frame;
     int frame_count;

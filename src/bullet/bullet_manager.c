@@ -47,7 +47,7 @@ BulletManager* create_bullet_manager(int max, BulletConfig cfg, ALLEGRO_BITMAP *
  * 
  * @param bullet Ponteiro para a bala.
  * 
- * @return bool representado se a bala está fora dos limites da tela.
+ * @return Bool representado se a bala está fora dos limites da tela.
  */
 bool is_bullet_off_boundary(Bullet *bullet) {
     return bullet->pos.y + bullet->height < 0 || bullet->pos.y > SCREEN_HEIGHT; 
@@ -57,8 +57,6 @@ bool is_bullet_off_boundary(Bullet *bullet) {
  * @brief Atualiza todas as balas ativas (movimento e descarte).
  * 
  * @param manager Ponteiro para o gerenciador de balas.
- * 
- * Balas fora da tela são automaticamente desativadas.
  */
 void update_bullets(BulletManager * manager) {
     for (int i = 0; i < manager->max; i++) {

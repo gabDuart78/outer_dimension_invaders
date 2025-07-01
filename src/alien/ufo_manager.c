@@ -79,7 +79,7 @@ UFO * create_ufo() {
  * 
  * @param ufo Ponteiro para UFO.
  * 
- * @return bool representando se o UFO saiu dos limites da tela.
+ * @return Bool representando se o UFO saiu dos limites da tela.
  */
 bool is_off_screen(UFO *ufo) {
     if (ufo->mov_dir == MOVE_RIGHT)
@@ -196,7 +196,7 @@ void maybe_spawn_ufo(UFO *ufo, double delta_time) {
  * 
  * @param ufo Ponteiro para UFO.
  * 
- * @return bool representado se o ufo está vivo ou não.
+ * @return Bool representado se o ufo está vivo ou não.
  */
 bool is_ufo_alive(UFO *ufo) {
     return ufo && ufo->is_active;

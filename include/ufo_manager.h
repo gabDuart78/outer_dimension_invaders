@@ -9,6 +9,10 @@
 typedef struct ALLEGRO_BITMAP ALLEGRO_BITMAP;
 typedef struct Animator Animator;
 
+/**
+ * @brief Estrutura utilizada para representar um UFO. 
+ */
+
 typedef struct UFO {
     Point pos;
     float speed;

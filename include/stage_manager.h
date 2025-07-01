@@ -6,6 +6,9 @@
 
 typedef struct AlienManager AlienManager;
 
+/**
+ * @brief Estrutura utilizada para representar um estágio do game.
+ */
 typedef struct StageManager {
     int current_stage;
     float move_interval_multiplier;

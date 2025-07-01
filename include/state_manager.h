@@ -3,7 +3,10 @@
 #define GAME_STATE_H
 
 #include <stdbool.h>
-    
+
+/**
+ * @brief Enumeração que representa os possíveis estados do programa. 
+ */
 typedef enum GameState {
     STATE_MENU,
     STATE_PLAYING,

@@ -8,6 +8,9 @@
 
 typedef struct ALLEGRO_BITMAP ALLEGRO_BITMAP;
 
+/**
+ * @brief Estrutura que representa uma bala. 
+ */
 typedef struct Bullet {
     Point pos;
     int id;
@@ -21,6 +24,9 @@ typedef struct Bullet {
     bool draw_hitbox;
 } Bullet;
 
+/**
+ * @brief Estrutura utilizada para representar uma configuração para uma bala.
+ */
 typedef struct BulletConfig {
     int id;
     int width;
@@ -42,10 +48,10 @@ void draw_bullet(Bullet *bullet);
 
 Point get_bullet_spawn_pos(Rect spawner, int width, int height);
 
-void destroy_bullet(Bullet *bullet);
-
 void active_bullet(Bullet *bullet);
 
 void deactive_bullet(Bullet *bullet);
+
+void destroy_bullet(Bullet *bullet);
 
 #endif

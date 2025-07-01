@@ -8,6 +8,9 @@
 #include <allegro5/allegro_image.h>
 #include "utils.h"
 
+/**
+ * @brief Estrutura que representa a interface de usuário (UI). 
+ * */
 typedef struct UI {
     ALLEGRO_COLOR text_color;
     ALLEGRO_FONT *font;
@@ -17,7 +20,9 @@ typedef struct UI {
 } UI;
 
 void init_ui(); 
+
 void draw_ui(int max_lifes, int lifes, int player_score);
+
 void destroy_ui();
 
 #endif

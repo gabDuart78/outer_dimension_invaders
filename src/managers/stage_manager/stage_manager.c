@@ -9,6 +9,10 @@
 #define MOVE_INTERVAL .63f
 #define ALIENS_TYPE_AMOUNT 3
 
+/// TODO
+/// Construir uma struct para armazenar os stages.
+/// Refatorar a função distribute_aliens
+
 /**
  * @brief Estrutura usada para representar a distribuição de um alien
  * na matrix aliens.

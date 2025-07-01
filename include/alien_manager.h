@@ -13,12 +13,19 @@
 typedef struct BulletManager BulletManager;
 typedef struct Alien Alien;
 
+/**
+ * @brief Enumeração dos tipos de aliens disponíveis no game.
+ */
+
 typedef enum AlienType {
     TOXIC_ALIEN,
     RAGE_ALIEN,
     SPOOKY_ALIEN,
 } AlienType;
 
+/**
+ * @brief Estrutura reponsável orquestrar os aliens, movimento, disparos, etc. 
+ */
 typedef struct AlienManager {
     Alien *aliens;
     BulletManager *bm;
@@ -40,11 +47,7 @@ AlienManager *create_alien_manager();
 void init_alien_manager(AlienManager *manager, int rows, int columns, float move_interval, 
     float fire_interval);
 
-void destroy_alien_manager(AlienManager *manager);
-
 void spawn_aliens(AlienManager *manager);
-
-void update_aliens(AlienManager *manager);
 
 bool all_aliens_dead(AlienManager *manager);
 
@@ -52,8 +55,12 @@ bool aliens_crossed_threshold(AlienManager *manager, float danger_line_y);
 
 void kill_alien_by_id(AlienManager *manager, int id);
 
+AlienConfig get_alien_config(AlienType type);
+
+void update_aliens(AlienManager *manager);
+
 void draw_aliens(AlienManager *manager);
 
-AlienConfig get_alien_config(AlienType type);
+void destroy_alien_manager(AlienManager *manager);
 
 #endif

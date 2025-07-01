@@ -6,6 +6,9 @@
 #include <stdbool.h>
 #include <limits.h>
 
+/**
+ * @brief Enumeração dos sons e músicas disponíveis no game. 
+ */
 typedef enum SoundID {
     SFX_PLAYER_SHOOT,
     SFX_ALIEN_SHOOT,

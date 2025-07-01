@@ -44,6 +44,8 @@ void handle_input(ALLEGRO_EVENT event) {
 
 /**
  * @brief Faz o update do estdo ativo.
+ * 
+ * @return Bool indicando se o programa deve continuar rodando ou não.
  */
 bool update() {
     switch(get_game_state()) {

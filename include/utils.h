@@ -6,6 +6,9 @@
 #include <allegro5/allegro_font.h>
 #include <stdlib.h>
 
+/**
+ * @brief Enumeração que representa as direções utilizadas no game. 
+ */
 typedef enum MoveDir {
     MOVE_RIGHT, 
     MOVE_LEFT, 
@@ -16,14 +19,23 @@ typedef enum MoveDir {
 
 typedef struct ALLEGRO_BITMAP ALLEGRO_BITMAP;
 
+/**
+ * @brief Estrutura que representa um ponto bidimensional. 
+ */
 typedef struct Point {
     float x, y;
 } Point;
 
+/**
+ * @brief Estrutura que representa uma cor RGB. 
+ */
 typedef struct RGB {
     int red, green, blue;
 } RGB;
 
+/**
+ * @brief Estrutura que representa um retângulo. 
+ */
 typedef struct Rect {
     Point pos;
     float width, height;

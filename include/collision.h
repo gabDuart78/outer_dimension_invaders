@@ -10,6 +10,7 @@ typedef struct AlienManager AlienManager;
 typedef struct UFO UFO;
 
 bool check_collision (Rect a, Rect b);
+
 void handle_collisions(Player *player, AlienManager *alien_manager, UFO *ufo);
 
 #endif

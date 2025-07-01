@@ -7,10 +7,14 @@
 typedef struct Rect Rect;
 typedef struct ALLEGRO_BITMAP ALLEGRO_BITMAP;
 
+/**
+ * @brief Estrutura usada para gerenciar múltiplas balas (bullet pool).
+ */
+
 typedef struct BulletManager {
-    Bullet *bullets;
-    int quantity;
-    int max;
+    Bullet *bullets; 
+    int quantity; 
+    int max; 
 } BulletManager;
 
 BulletManager * create_bullet_manager(int max, BulletConfig cfg, ALLEGRO_BITMAP * sprite);

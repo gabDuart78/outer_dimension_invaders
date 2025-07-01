@@ -49,7 +49,6 @@ Alien create_alien(AlienConfig cfg, int id, int animation_frames, float animatio
 /**
  * @brief Desenha o alien na tela incluíndo o srite e opcionalmente a hitbox. 
  */
-
 void draw_alien(Alien* alien) {
     draw_animated_sprite(alien->sprite_sheet, alien->animator, alien->pos.x, alien->pos.y);
 
@@ -85,7 +84,7 @@ void move_alien_vertical(Alien * alien, MoveDir move_dir, int amount) {
 /**
  * @brief Muda o estado lógico do alien (marca como morto) e toca o som de morte.
  * 
- * @param Não libera memória.
+ * @param alien Ponteiro para um alien.
  */
 void kill_alien(Alien *alien) {
     alien->is_alive = false;

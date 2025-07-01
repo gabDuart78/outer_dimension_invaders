@@ -14,7 +14,7 @@
  * @param a Primeiro retângulo.
  * @param b Segundo retângulo.
  * 
- * @return bool representado se uma colisão ocorreu.
+ * @return Bool representado se uma colisão ocorreu.
  */
 bool check_collision (Rect a, Rect b) {
     return a.pos.x < b.pos.x + b.width &&
@@ -29,7 +29,7 @@ bool check_collision (Rect a, Rect b) {
  * @param b Ponteiro para a bala.
  * @param ufo Ponteiro para o UFO.
  * 
- * @return bool representado se uma colisão ocorreu.
+ * @return Bool representado se uma colisão ocorreu.
  */
 bool bullet_hits_ufo(Bullet *b, UFO *ufo) {
     return check_collision(get_collider(b->pos, b->width, b->height), 
@@ -39,10 +39,10 @@ bool bullet_hits_ufo(Bullet *b, UFO *ufo) {
 /**
  * @brief Verifica se uma bala colidiu com um alien.
  * 
- * b Ponteiro para a bala.
- * a Ponteiro para o alien.
+ * @param b Ponteiro para a bala.
+ * @param a Ponteiro para o alien.
  * 
- * @return bool representado se uma colisão ocorreu.
+ * @return Bool representado se uma colisão ocorreu.
  */
 bool bullet_hits_enemy(Bullet *b, Alien *a) {
     return check_collision(get_collider(b->pos, b->width, b->height), 
@@ -52,10 +52,10 @@ bool bullet_hits_enemy(Bullet *b, Alien *a) {
 /**
  * @brief Verifica se uma bala colidiu com o jogador.
  * 
- * b Ponteiro para a bala.
- * p Ponteiro para o jogador.
+ * @param b Ponteiro para a bala.
+ * @param p Ponteiro para o jogador.
  * 
- * @return bool representado se uma colisão ocorreu.
+ * @return Bool representado se uma colisão ocorreu.
  */
 bool bullet_hits_player(Bullet *b, Player *p) {
     return check_collision(get_collider(b->pos, b->width, b->height), 
@@ -65,8 +65,8 @@ bool bullet_hits_player(Bullet *b, Player *p) {
 /**
  * @brief Trata colisões entre balas do jogador e o UFO.
  * 
- * player Ponteiro para o jogador.
- * ufo Ponteiro para o UFO.
+ * @param player Ponteiro para o jogador.
+ * @param ufo Ponteiro para o UFO.
  */
 void handle_player_bullets_collision_with_ufo(Player *player, UFO *ufo) {
     if (!ufo->is_active) return;
@@ -88,8 +88,8 @@ void handle_player_bullets_collision_with_ufo(Player *player, UFO *ufo) {
 /**
  * @brief Trata colisões entre balas do jogador e todos os alienígenas.
  * 
- *player Ponteiro para o jogador.
- *alien_manager Ponteiro para o gerenciador de aliens.
+ * @param player Ponteiro para o jogador.
+ * @param alien_manager Ponteiro para o gerenciador de aliens.
  */
 void handle_player_bullets_collision_with_aliens(Player *player, AlienManager *alien_manager) {
     for (int i = 0; i < player->bm->max; i++) {
@@ -117,9 +117,9 @@ void handle_player_bullets_collision_with_aliens(Player *player, AlienManager *a
 /**
  * @brief Trata todas as colisões de balas do jogador (com UFOs e aliens).
  * 
- *player Ponteiro para o jogador.
- *alien_manager Ponteiro para o gerenciador de aliens.
- *ufo Ponteiro para o UFO.
+ * @param player Ponteiro para o jogador.
+ * @param alien_manager Ponteiro para o gerenciador de aliens.
+ * @param ufo Ponteiro para o UFO.
  */
 void handle_player_bullets_collision(Player *player, AlienManager *alien_manager, UFO *ufo) {
     handle_player_bullets_collision_with_aliens(player, alien_manager);
@@ -129,8 +129,8 @@ void handle_player_bullets_collision(Player *player, AlienManager *alien_manager
 /**
  * @brief Trata colisões entre balas dos alienígenas e o jogador.
  * 
- *alien_manager Ponteiro para o gerenciador de aliens.
- *player Ponteiro para o jogador.
+ * @param alien_manager Ponteiro para o gerenciador de aliens.
+ * @param player Ponteiro para o jogador.
  */
 void handle_aliens_bullets_collision(AlienManager *alien_manager, Player *player) {
     for (int i = 0; i < alien_manager->bm->max; i++) {

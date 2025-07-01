@@ -8,11 +8,17 @@
 #define NAME_LENGTH 3
 #define SCORES_PATH "../scores/scores.dat"
 
+/**
+ * @brief Estrutura que representa um score.
+ */
 typedef struct ScoreEntry {
     int score;
     char name[NAME_LENGTH + 1];
 } ScoreEntry;
 
+/**
+ * @brief Estrutura usada para armazenar scores. 
+ */
 typedef struct HighScoreTable {
     ScoreEntry entries[SCORE_TABLE_AMOUNT];
     int count;
