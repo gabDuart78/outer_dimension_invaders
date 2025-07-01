@@ -26,8 +26,19 @@
 #define MUSIC_BUFFERS_SIZE 2048
 #define RESERVE_SAMPLES 16
 
+// TODO
+// Refatorar completamente o sound manager
+// Foco em funções sensíveis como rewind e remove
+// Falta de consistência SoundID usado tanto para musics e sfxs
+// Switch case muito grande pode ser simplificado usado arrays
+
 static SoundBank sb;
 
+/**
+ * @brief Inicializa os componentes necessários da biblioteca allegro para o sistema de som.
+ * 
+ * @return Bool indicando se todos os componentes foram inicializados corretamente.
+ */
 bool init_sound_manager() {
     if (!al_install_audio()) {
         fprintf(stderr, "Failed to install audio.\n");
@@ -48,6 +59,13 @@ bool init_sound_manager() {
     return true;
 }
 
+/**
+ * @brief Carrega um sound effect.
+ * 
+ * @param sample_path Caminho para o sound effect.
+ * 
+ * @return Ponteiro para SFX. 
+ */
 SFX* load_sound(char *sample_path) {
     SFX *sfx_wrapper = (SFX *) malloc(sizeof(SFX));
 
@@ -68,7 +86,14 @@ SFX* load_sound(char *sample_path) {
     return sfx_wrapper;
 }
 
-Music* load_music(char * music_path) {
+/**
+ * @brief Carrega um música.
+ * 
+ * @param music_path Caminho para uma música.
+ * 
+ * @return Ponteiro para Music. 
+ */
+Music* load_music(char *music_path) {
     Music *music_wrapper = (Music *) malloc(sizeof(Music));
 
     if (!music_wrapper) {
@@ -89,6 +114,9 @@ Music* load_music(char * music_path) {
     return music_wrapper;
 }
 
+/**
+ * @brief Carrega todas os sons e músicas utilizados no game.
+ */
 void load_sounds() {
     sb.player_shoot = load_sound(PLAYER_BULLET_SFX);
     sb.alien_shoot = load_sound(ALIEN_BULLET_SFX);
@@ -103,6 +131,13 @@ void load_sounds() {
     sb.title_screen = load_music(TITLE_SCREEN_MUSIC);
 }
 
+/**
+ * @brief Retorna o sound effect correspondete ao id passado.
+ * 
+ * @param id SoundID identificação de um efeito sonoro.
+ * 
+ * @return Ponteiro para SFX desejado.
+ */
 SFX* get_sfx(SoundID id) {
     switch(id) {
         case SFX_PLAYER_SHOOT:
@@ -126,6 +161,13 @@ SFX* get_sfx(SoundID id) {
     }
 }
 
+/**
+ * @brief Retorna o música correspondete ao id passado.
+ * 
+ * @param id SoundID identificação de uma música sonoro.
+ * 
+ * @return Ponteiro para Music desejada..
+ */
 Music* get_music(SoundID id) {
     switch(id) {
         case PLAYING_BG_MUSIC:
@@ -139,12 +181,22 @@ Music* get_music(SoundID id) {
     }
 }
 
+/**
+ * @brief Utiliza al_play_sample para tocar um efeito sonoro.
+ * 
+ * @param id Um SoundID para o efeito sonoro desejado.
+ */
 void play_sound(SoundID id) {
     SFX *sfx_wrapper = get_sfx(id);
     al_play_sample(sfx_wrapper->sfx, SFX_GAIN, 0, 1.0, 
         ALLEGRO_PLAYMODE_ONCE, &sfx_wrapper->id);
 }
 
+/**
+ * @brief Utiliza algumas funções da biblioteca allegro para colocar música no mixer e reproduzí-la.
+ * 
+ * @param id Um SoundID para a música desejada.
+ */
 void play_music(SoundID id) {
     Music *music_wrapper = get_music(id);
     al_attach_audio_stream_to_mixer(music_wrapper->music, al_get_default_mixer());
@@ -152,18 +204,33 @@ void play_music(SoundID id) {
     al_set_audio_stream_gain(music_wrapper->music, MUSIC_GAIN);
 }
 
-void destroy_smaple(ALLEGRO_SAMPLE *sfx) {
+/**
+ * @brief Libera os recursos utilizados pelo ALLEGRO_SAMPLE.
+ * 
+ * @param sfx Ponteiro para um ALLEGRO_SAMPLE.
+ */
+void destroy_sample(ALLEGRO_SAMPLE *sfx) {
     if (!sfx) return;
 
     al_destroy_sample(sfx);
 }
 
+/**
+ * @brief Libera os recursos utilizados pelo ALLEGRO_AUDIO_STREAM.
+ * 
+ * @param music Ponteiro para um ALLEGRO_AUDIO_STREAM.
+ */
 void destroy_audio_stream(ALLEGRO_AUDIO_STREAM *music) {
     if (!music) return;
 
     al_destroy_audio_stream(music);
 }
 
+/**
+ * @brief Reseta uma música para o início.
+ * 
+ * @param id Um SoundID para a música desejada. 
+ */
 void rewind_music(SoundID id) {
     Music *music_wrapper = get_music(id);
 
@@ -178,14 +245,24 @@ void rewind_music(SoundID id) {
     }
 }
 
+/**
+ * @brief Para a repodução de uma efeito sonoro.
+ * 
+ * @param id Um SoundID para o efeito sonoro desejado. 
+ */
 void remove_sound(SoundID id) {
     al_stop_sample(&get_sfx(id)->id);
 } 
 
+/**
+ * @brief Reseta um efeito sonoro para o início.
+ * 
+ * @param id Um SoundID para o efeito sonoro desejado. 
+ */
 void rewind_sound(SoundID id) {
     SFX *sfx_wrapper = get_sfx(id);
 
-    destroy_smaple(sfx_wrapper->sfx);
+    destroy_sample(sfx_wrapper->sfx);
 
     sfx_wrapper->sfx = al_load_sample(sfx_wrapper->path);
 
@@ -195,17 +272,32 @@ void rewind_sound(SoundID id) {
     }
 }
 
+/**
+ * @brief Para a repodução de uma música.
+ * 
+ * @param id Um SoundID para a música desejada. 
+ */
 void remove_music(SoundID id) {
     al_detach_audio_stream(get_music(id)->music);
 }
 
+/**
+ * @brief Libera os recursos utilizados por SFX.
+ * 
+ * @param sfx_wrapper Um SFX, envoltório para um allegro_sample.
+ */
 void destroy_sfx_wrapper(SFX *sfx_wrapper) {
     if (!sfx_wrapper) return;
 
-    destroy_smaple(sfx_wrapper->sfx);
+    destroy_sample(sfx_wrapper->sfx);
     free(sfx_wrapper);
 }
 
+/**
+ * @brief Libera os recursos utilizados por MUSIC.
+ * 
+ * @param music_wrapper Um MUSIC, envoltório para um allegro_audio_stream.
+ */
 void destroy_music_wrapper(Music *music_wrapper) {
     if (!music_wrapper) return;
 
@@ -213,6 +305,9 @@ void destroy_music_wrapper(Music *music_wrapper) {
     free(music_wrapper);
 }
 
+/**
+ * @brief Libera todos os recurosos utilizados pelo SoundBank.
+ */
 void destroy_sound_bank() {
     destroy_sfx_wrapper(sb.player_shoot);
     destroy_sfx_wrapper(sb.player_hit);

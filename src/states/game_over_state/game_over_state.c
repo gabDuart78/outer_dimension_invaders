@@ -21,17 +21,28 @@
 
 static SoundID sfx_id;
 
+/**
+ * @brief função usada para carregar os artefatos necessários ao game over state.
+ */
 void enter_game_over_state() {
     load_background(get_background_manager(), GAME_OVER_BG_PATH);
     sfx_id = has_player_win() ? SFX_GAME_WIN : SFX_GAME_OVER;
     play_sound(sfx_id);
 }
 
+/**
+ * @brief função usada para liberar e redefinir todo que foi usado pelo game over state.
+ */
 void exit_game_over_state() {
     remove_sound(sfx_id);
     rewind_sound(sfx_id);
 }
 
+/**
+ * @brief Lida com os inputs do game over state.
+ * 
+ * @param event Um ALLEGRO_EVENT a ser verificado.
+ */
 void handle_game_over_input(ALLEGRO_EVENT event) {
     if (close_display(event)) {
         exit_game_over_state();
@@ -73,6 +84,11 @@ void handle_game_over_input(ALLEGRO_EVENT event) {
     }
 }
 
+/**
+ * @brief Desenha na telas as opções desse state.
+ * 
+ * @param current_y Um ponteiro indicando onde começar a desenhas as opções.
+ * */
 void draw_options(float *current_y) {
     al_draw_text(get_small_font(), al_map_rgb(255, 255, 255), 
         SCREEN_WIDTH * 0.5f, *current_y, ALLEGRO_ALIGN_CENTER, 
@@ -85,11 +101,20 @@ void draw_options(float *current_y) {
         "Press Esc to return to menu");
 }
 
+/**
+ * @brief Desenha a menssagem de game over na tela.
+ *
+ * @param message Menssagem a ser desenhada. 
+ * @param current_y Um ponteiro indicando onde começar a mensagem.
+ */
 void draw_game_over_message(const char *message, float *current_y) {
      draw_wrapped_text(get_small_font(), al_map_rgb(255, 255, 255), 
         SCREEN_WIDTH * 0.5f, *current_y, 300, message, 10);
 }
 
+/**
+ * @brief Desenha a tela de game over, opções e mensagem.
+ */
 void draw_game_over() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
     draw_background(get_background_manager());

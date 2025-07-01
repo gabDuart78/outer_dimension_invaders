@@ -27,6 +27,9 @@ static ExplosionManager *explosion_manager = NULL;
 static AlienManager *alien_manager = NULL;
 static UFO *ufo = NULL;
 
+/**
+ * @brief função usada para carregar os artefatos necessários ao playing state.
+ */
 void enter_playing_state() {
     player = create_player(PLAYER_CONFIG);
     player->score = get_player_score();
@@ -41,6 +44,9 @@ void enter_playing_state() {
     init_ui();
 }
 
+/**
+ * @brief Libera os recursos usados pelo playing state.
+ */
 void clean_up_game_state() {
     remove_music(PLAYING_BG_MUSIC);
     rewind_music(PLAYING_BG_MUSIC);
@@ -55,16 +61,31 @@ void clean_up_game_state() {
     explosion_manager = NULL;
 } 
 
+/**
+ * @brief Libera os recursos usados pelo playing state e define o próximo estado.
+ * 
+ * @param new_state Próximo GameState.
+ * @param enter_state Um bool indicando se deve ser executada a função enter do próximo state.
+ */
 void exit_game_state(GameState new_state, bool enter_state) {
     clean_up_game_state();
     set_game_state(new_state, enter_state);
 }
 
+/**
+ * @brief Libera os recursos usados pelo playing state e define o próximo estado, sai com transição.
+ */
 void exit_game_state_with_transition(GameState new_state, bool enter_state) {
     clean_up_game_state();
     enter_state_with_transition(new_state, .2, enter_state);
 }
 
+/**
+ * @brief Faz a atualização da lógica do playing state, player, aliens, ufo, projéties, colisões e progresso no estágio.
+ * 
+ * @return Bool que indica se o jogo acabou (aliens cruzem a linha de perigo, player tenha morrido ou 
+ * todos os aliens tenham morrido).
+ */
 bool update_game_logic() {
     bool invasion_succeeded = aliens_crossed_threshold(alien_manager, DANGER_LINE_Y);
 
@@ -79,7 +100,7 @@ bool update_game_logic() {
         return false;
     }
 
-    if (get_stage_manager()->stage_cleared) {
+    if (check_stage_progress(get_stage_manager(), alien_manager)) {
         set_game_over(true);
         set_player_win(true);
 
@@ -90,11 +111,13 @@ bool update_game_logic() {
     update_aliens(alien_manager);
     update_ufo(ufo);
     handle_collisions(player, alien_manager, ufo);
-    check_stage_progress(get_stage_manager(), alien_manager);
 
     return true;
 }
 
+/**
+ * @brief Faz o update da lógica do playing state e das explosões, caso o jogo tenha acado entra no extado game over.
+ */
 void update_game() {
     double now = al_get_time();
     double delta_time = now  - _last_update;
@@ -109,6 +132,11 @@ void update_game() {
     update_explosions(explosion_manager, delta_time);
 }
 
+/**
+ * @brief Lida com os inputs do playing state.
+ * 
+ * @param event Um ALLEGRO_EVENT a ser verificado.
+ */
 void handle_game_input(ALLEGRO_EVENT event) {
     if (key_pressed(event, ALLEGRO_KEY_ESCAPE)) {
         reset_game_context();
@@ -124,6 +152,9 @@ void handle_game_input(ALLEGRO_EVENT event) {
     handle_player_events(player, interpret_player_event(&event));
 }
 
+/**
+ * @brief Desenha o playing state, player, aliens, projetéis, ufo, explosões, background e ui.
+ */
 void draw_game() {
     al_clear_to_color(al_map_rgb(0, 0, 0));
 
@@ -139,6 +170,11 @@ void draw_game() {
     al_flip_display();
 }
 
+/**
+ * @brief Evento a ser executado cada vez que um alien é morto, inicia uma explosão.
+ * 
+ * @collider Retângulo que representa a hitbox do alien que foi morto. 
+ */
 void on_kill_enemy(Rect collider) {
     trigger_explosion(explosion_manager, collider);
 }

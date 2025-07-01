@@ -12,6 +12,12 @@ static GameState current_state;
 const char states[][100] = {"STATE_MENU", "STATE_PLAYING","STATE_GAME_OVER", 
     "STATE_EXIT", "STATE_TRANSITION", "STATE_SAVE_SCORE", "STATE_SCORE_RANK"};
 
+/**
+ * @brief Define o estado atual do game.
+ * 
+ * @param new_state Novo estado a ser definido
+ * @param enter_state Boolean define se deve ou não ser executada a função enter do estado. 
+ */
 void set_game_state(GameState new_state, bool enter_state) {
     current_state = new_state;
 
@@ -29,17 +35,29 @@ void set_game_state(GameState new_state, bool enter_state) {
             break;
         case STATE_SCORE_RANK:
             enter_score_rank_state();
+            break;
         default:
             break; 
     }
-}
+}  
 
+/**
+ * @brief Entra em uma estado primeiro passando por um estado de transição.
+ * 
+ * @param next_state Próximo estado a ser definido.
+ * @param time Tempo em segudos até que seja definido o novo estado.
+ * @param enter_state Boolean define se deve ou não ser executada a função enter do estado.  
+ */
 void enter_state_with_transition(GameState next_state, double time, bool enter_state) {
     set_game_state(STATE_TRANSITION, false);
     enter_transition_state(next_state, time, enter_state);
 }
 
+/**
+ * @brief Retorna o estado atual do game. 
+ * 
+ * @return GameState Esatado atual.
+ */
 GameState get_game_state() {
     return current_state;
 }
-

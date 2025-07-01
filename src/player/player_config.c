@@ -1,5 +1,7 @@
 #include "player_config.h"
 
+/// Configurações utilizadas para o player.
+
 const BulletConfig PLAYER_BULLET_CONFIG = {
     .width = 8.0f,
     .height = 19.0f,

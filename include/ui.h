@@ -6,7 +6,6 @@
 #include <allegro5/allegro_ttf.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
-#include <stdbool.h>
 #include "utils.h"
 
 typedef struct UI {
@@ -17,7 +16,7 @@ typedef struct UI {
     ALLEGRO_BITMAP *life_icon_deactive;   
 } UI;
 
-bool init_ui(); 
+void init_ui(); 
 void draw_ui(int max_lifes, int lifes, int player_score);
 void destroy_ui();
 

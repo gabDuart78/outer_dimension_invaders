@@ -9,10 +9,14 @@
 #define EXPLOSION_SPRITE_PATH "../assets/images/sprites/explosion.png"
 
 #define EXPLOSION_WIDTH 40
-#define EXPLOSION_HEIGTH 40
+#define EXPLOSION_HEIGHT 40
 #define EXPLOSION_FRAMES 6
 #define EXPLOSION_FRAME_DURATION 1.f / 18.f
 
+/**
+ * @brief Estrura utilizada para representar uma explosão, 
+ * posição, animação, duração, etc.
+ */
 typedef struct Explosion {
     Point pos;
     float timer;
@@ -22,12 +26,20 @@ typedef struct Explosion {
     Animator *animator;
 } Explosion;
 
+/**
+ * @brief Estrutura utilizada para administrar as explosões do game.
+ */
 typedef struct ExplosionManager {
     Explosion *explosions;
     int count;
     int max;
 } ExplosionManager;
 
+/**
+ * @brief Alloca memoria para um ExplosionManager.
+ * 
+ * @return ExplosionManager.
+ */
 ExplosionManager* create_explosion_manager() {
     ExplosionManager *manager = (ExplosionManager *) malloc(sizeof(ExplosionManager));
 
@@ -39,6 +51,15 @@ ExplosionManager* create_explosion_manager() {
     return manager;
 }
 
+/**
+ * @brief Cria uma explosion.
+ * 
+ * @param sprite_path Caminho para o sprite da explosão
+ * @param animator Estrutura Animator para animar o sprite da explosão.
+ * @param duration Duração em segundos da explosão.
+ * 
+ * @return Explosion.
+ */
 Explosion create_explosion(const char *sprite_path, Animator *animator, float duration) {
     Explosion explosion;
     explosion.sprite = get_sprite(sprite_path);
@@ -49,6 +70,12 @@ Explosion create_explosion(const char *sprite_path, Animator *animator, float du
     return explosion;
 }
 
+/**
+ * @brief Inicializa o gerenciador de explosões.
+ * 
+ * @param manager Ponteiro para o ExplosionManager.
+ * @param max Quantidade máxima de exlosões suportadas.
+ */
 void init_explosion_manager(ExplosionManager *manager, int max) {
     manager->max = max;
     manager->explosions = (Explosion *) malloc(sizeof(Explosion) * max);
@@ -67,7 +94,7 @@ void init_explosion_manager(ExplosionManager *manager, int max) {
         }
 
         init_animator(animator, EXPLOSION_FRAMES, EXPLOSION_WIDTH, 
-            EXPLOSION_HEIGTH, EXPLOSION_FRAME_DURATION, false);
+            EXPLOSION_HEIGHT, EXPLOSION_FRAME_DURATION, false);
 
         manager->explosions[i] = create_explosion(EXPLOSION_SPRITE_PATH, animator, 
             EXPLOSION_FRAME_DURATION * EXPLOSION_FRAMES);
@@ -76,28 +103,49 @@ void init_explosion_manager(ExplosionManager *manager, int max) {
     manager->count = 0;
 }
 
+/**
+ * @brief Ativa uma explosão.
+ * 
+ * @param manager Ponteiro para o ExplosionManager.
+ * @param collider Um rectângulo que representa o objeto explodido.
+ */
 void trigger_explosion(ExplosionManager *manager, Rect collider) {
     if (manager->count >= manager->max) return;
 
     Explosion *explosion = NULL;
 
     for (int i = 0; i < manager->max; i++) {
-        if (!((explosion = &manager->explosions[i])->active))
+        if (!manager->explosions[i].active){
+            explosion = &manager->explosions[i];
             break;
+        }
     }
 
+    if (!explosion) return;
+
     explosion->pos = get_centered_pos_inside_rect(collider, 
-        EXPLOSION_WIDTH, EXPLOSION_HEIGTH);
+        EXPLOSION_WIDTH, EXPLOSION_HEIGHT);
     explosion->active = true;  
     explosion->timer = 0;
     manager->count++;
 }
 
+/**
+ * @brief Desativa uma explosão, somente altera seu estado lógico.
+ * 
+ * @param explosion Ponteiro para a explosão a ser desativada.
+ */
 void deactive_explosion(Explosion *explosion) {
     reset_animation(explosion->animator);
     explosion->active = false;
 }
 
+/**
+ * @brief Atualiza as explosões e as desativa caso tenha terminado.
+ * 
+ * @param manager Ponteiro para o ExplosionManager
+ * @param delta_time Tempo decorrido em segundos entre o último frame e o atual.
+ */
 void update_explosions(ExplosionManager *manager, double delta_time) {
     for (int i = 0; i < manager->max; i++) {
         Explosion *explosion = &manager->explosions[i];
@@ -115,6 +163,11 @@ void update_explosions(ExplosionManager *manager, double delta_time) {
     }
 }
 
+/**
+ * @brief Desenhas as explosões na tela.
+ * 
+ * @param manager Ponteiro para o ExplosionManager.
+ */
 void draw_explosions(ExplosionManager *manager) {
     for (int i = 0; i < manager->max; i++) {
         Explosion *explosion = &manager->explosions[i];
@@ -126,11 +179,21 @@ void draw_explosions(ExplosionManager *manager) {
     }
 }  
 
+/**
+ * @brief Libera os recursos utilizados pela Explosion.
+ * 
+ * @param explosion Ponteiro para uma Explosion.
+ */
 void destroy_explosion(Explosion *explosion) {
     if (explosion->sprite) al_destroy_bitmap(explosion->sprite);
     if (explosion->animator) destroy_animator(explosion->animator);
 }
 
+/**
+ * @brief Libera os recursos utilizados por todas as explosões do game.
+ * 
+ * @param manager Ponteiro para o ExplosionManager.
+ */
 void destroy_explosions(ExplosionManager *manager) {
     for (int i = 0; i < manager->max; i++) 
         destroy_explosion(&manager->explosions[i]);
@@ -138,6 +201,12 @@ void destroy_explosions(ExplosionManager *manager) {
     free(manager->explosions);
 }
 
+
+/**
+ * @brief Libera os recursos utilizados pelo ExplosionManager.
+ * 
+ * @param manager Ponteiro para o ExplosionManger.
+ */
 void destroy_explosion_manager(ExplosionManager *manager) {
     if (!manager) return;
 

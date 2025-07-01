@@ -19,6 +19,7 @@
 #define UI_WIDTH SCREEN_WIDTH - UI_POS_X * 2
 #define UI_HEIGHT 20
 
+/// Retângulo usado para representar a posição da UI na tela e suas dimensões.
 const Rect UI_wrapper = {
     {UI_POS_X, UI_POS_Y},
     UI_WIDTH,
@@ -27,16 +28,23 @@ const Rect UI_wrapper = {
 
 static UI ui;
 
-bool init_ui() {
+/**
+ * @brief Inicializa a UI, cor do texto, fonte utilizada, icons, etc.
+ */
+void init_ui() {
     ui.text_color = al_map_rgb(255, 255, 255);
     ui.font = get_small_font();
     ui.wrapper = UI_wrapper;
     ui.life_icon_active = get_sprite(LIFE_ICON_ACTIVE_PATH);
     ui.life_icon_deactive = get_sprite(LIFE_ICON_DEACTIVE_PATH);
-
-    return true;
 }
 
+/**
+ * @brief Desenha icons na tela que representam a vida atual do player.
+ * 
+ * @param max_lifes Vida máxima do player.
+ * @param lifes Quantidade atual de vidas do player.
+ */
 void draw_player_lifes(int max_lifes, int lifes) {
     for (int i = 0; i < max_lifes; i++) {
         al_draw_bitmap(i < lifes ? ui.life_icon_active : ui.life_icon_deactive, 
@@ -44,6 +52,12 @@ void draw_player_lifes(int max_lifes, int lifes) {
     }
 }
 
+/**
+ * @brief Desenha o maior score registrado e o score atual do player na tela.
+ * 
+ * @param max_score Maior score registrado.
+ * @param player_score Score atual do player.
+ */
 void draw_score(int max_score, int player_score) {
     char buffer1[64];
     sprintf(buffer1, "Stage: %d  <Max: %.7d>  Score: %.7d",
@@ -53,12 +67,21 @@ void draw_score(int max_score, int player_score) {
         ui.wrapper.pos.y, ALLEGRO_ALIGN_RIGHT, buffer1);
 }
 
-
+/**
+ * @brief Desenha a UI na tela contendo informações sobre o player e sobre o estágio atual.
+ * 
+ * @param max_lifes Vida máxima do player.
+ * @param lifes Vida atual do player.
+ * @param player_score Score atual do player. 
+ */
 void draw_ui(int max_lifes, int lifes, int player_score) {
     draw_score(get_highest_score(get_score_table()), player_score);
     draw_player_lifes(max_lifes, lifes);
 }
 
+/**
+ * @brief Libera os recursos utilizados pela UI.
+ */
 void destroy_ui() {
     if (ui.life_icon_active)
         al_destroy_bitmap(ui.life_icon_active);

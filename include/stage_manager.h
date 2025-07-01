@@ -21,9 +21,7 @@ void destroy_stage_manager(StageManager *stage_manager);
 
 void start_stage(StageManager *stage_manager, AlienManager *alien_manager);
 
-bool is_stage_cleared(StageManager *stage_manager);
-
-void check_stage_progress(StageManager *stage_manager, AlienManager *alien_manager);
+bool check_stage_progress(StageManager *stage_manager, AlienManager *alien_manager);
 
 void next_stage(StageManager *stage_manager);
 

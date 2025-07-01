@@ -4,6 +4,15 @@
 #include <stdlib.h>
 #include "screen_config.h"
 
+/**
+ * @brief Cria e inicializa um gerenciador de balas com balas pré-criadas e inativas.
+ * 
+ * @param max Número máximo.
+ * @param cfg Configuração padrão de cada bala.
+ * @param sprite Bitmap a ser usado por todas as balas.
+ * 
+ * @return BulletManager.
+ */
 BulletManager* create_bullet_manager(int max, BulletConfig cfg, ALLEGRO_BITMAP *sprite) {
     BulletManager *manager = (BulletManager *) malloc(sizeof(BulletManager));
 
@@ -33,10 +42,24 @@ BulletManager* create_bullet_manager(int max, BulletConfig cfg, ALLEGRO_BITMAP *
      return manager;
 }
 
+/**
+ * @brief Verifica se a bala está fora da tela.
+ * 
+ * @param bullet Ponteiro para a bala.
+ * 
+ * @return bool representado se a bala está fora dos limites da tela.
+ */
 bool is_bullet_off_boundary(Bullet *bullet) {
     return bullet->pos.y + bullet->height < 0 || bullet->pos.y > SCREEN_HEIGHT; 
 }
 
+/**
+ * @brief Atualiza todas as balas ativas (movimento e descarte).
+ * 
+ * @param manager Ponteiro para o gerenciador de balas.
+ * 
+ * Balas fora da tela são automaticamente desativadas.
+ */
 void update_bullets(BulletManager * manager) {
     for (int i = 0; i < manager->max; i++) {
         Bullet *bullet = &manager->bullets[i];
@@ -51,6 +74,11 @@ void update_bullets(BulletManager * manager) {
     }
 }
 
+/**
+ * @brief Libera os recursos usados pelas balas e o gerenciador.
+ * 
+ * @param manager Ponteiro para o gerenciador.
+ */
 void destroy_bullet_manager(BulletManager * manager) {
     if (!manager) return;
 
@@ -59,13 +87,20 @@ void destroy_bullet_manager(BulletManager * manager) {
         destroy_bullet(bullet);
     }
 
-    if (!manager->bullets) {
+    if (manager->bullets) 
         free(manager->bullets);
-    }
+    
 
     free(manager);
 }
 
+/**
+ * @brief Retorna um ponteiro para a próxima bala inativa disponível.
+ * 
+ * @param manager Ponteiro para o gerenciador.
+ * 
+ * @return Bullet desativada.
+ */
 Bullet* get_inactive_bullet(BulletManager *manager) {
     for (int i = 0; i < manager->max; i++)
         if (!manager->bullets[i].is_active) return &manager->bullets[i];
@@ -73,16 +108,34 @@ Bullet* get_inactive_bullet(BulletManager *manager) {
     return NULL;
 }
 
+/**
+ * @brief Ativa uma bala específica por ID e incrementa o contador.
+ * 
+ * @param manager Ponteiro para o gerenciador.
+ * @param id Index da bala no array.
+ */
 void active_bullet_by_id(BulletManager *manager, int id) {
     active_bullet(&manager->bullets[id]);
     manager->quantity++;
 }
 
+/**
+ * @brief Desativa uma bala específica por ID e decrementa o contador.
+ * 
+ * @param manager Ponteiro para o gerenciador.
+ * @param id Índice da bala no array.
+ */
 void deactive_bullet_by_id(BulletManager *manager, int id) {
     deactive_bullet(&manager->bullets[id]);
     manager->quantity--;
 }
 
+/**
+ * @brief Ativa uma bala inativa com base na hitbox do atirador.
+ * 
+ * @param manager Ponteiro para o gerenciador.
+ * @param hitbox Retângulo de onde a bala será disparada.
+ */
 void fire_bullet(BulletManager *manager, Rect hitbox) {
     if (manager->quantity == manager->max) return;
 
@@ -91,6 +144,11 @@ void fire_bullet(BulletManager *manager, Rect hitbox) {
     active_bullet_by_id(manager, bullet->id);
 }
 
+/**
+ * @brief Desenha todas as balas ativas na tela.
+ * 
+ * @param manager Ponteiro para o gerenciador de balas.
+ */
 void draw_bullets(BulletManager *manager) {
     for (int i = 0; i < manager->max; i++) {
         Bullet *bullet = &manager->bullets[i];

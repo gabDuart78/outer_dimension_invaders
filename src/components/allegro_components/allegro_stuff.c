@@ -7,6 +7,12 @@
 #include <allegro5/allegro_audio.h>
 #include <stdio.h>
 
+/**
+ * @brief Inicializa os componentes da biblioteca Allegro necessários
+ * para o game.
+ * 
+ * @return bool indicando se que todos os componentes forem inicializados com sucesso ou não.
+ */
 bool init_all_necessary_allegro_components() {
     if (!al_init()) {
         fprintf(stderr, "Failed to init Allegro5.\n");
@@ -26,6 +32,11 @@ bool init_all_necessary_allegro_components() {
     return true;
 }
 
+/**
+ * @brief Instala o mouse e o teclado para receber inputs. 
+ * 
+ * @return bool indicando se que todos os componentes forem instalados com sucesso ou não.
+ */
 bool install_all_necessary_allegro_components() {
     if (!al_install_keyboard()) {
         fprintf(stderr, "Falied to install keyboard.\n");

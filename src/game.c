@@ -17,6 +17,9 @@
 #include <stdbool.h>
 #include <allegro5/allegro.h>
 
+/**
+ * @brief Delega os eventos recebidos para o estado ativo. 
+ */
 void handle_input(ALLEGRO_EVENT event) {
     switch(get_game_state()) {
         case STATE_MENU:
@@ -39,6 +42,9 @@ void handle_input(ALLEGRO_EVENT event) {
     }
 }
 
+/**
+ * @brief Faz o update do estdo ativo.
+ */
 bool update() {
     switch(get_game_state()) {
         case STATE_MENU:
@@ -62,6 +68,9 @@ bool update() {
     return true;
 }
 
+/**
+ * @brief Desenha o estado ativo.
+ */
 void draw() {
     switch(get_game_state()) {
         case STATE_MENU:
@@ -92,6 +101,10 @@ void draw() {
 // Refactor code
 // Add player power ups
 
+/**
+ * @brief Ponto de início para o game, onde será carregado todas as dependências
+ * do game e os componentes necessários para rodar o game.
+ * */
 int main() {
     ALLEGRO_DISPLAY *display = NULL;
     ALLEGRO_EVENT_QUEUE *queue = NULL;

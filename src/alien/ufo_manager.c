@@ -25,6 +25,11 @@
 #define UFO_MAX_SPEED 5
 #define UFO_ACCELERATION_RATE 0.008f
 
+/**
+ * @brief Inicializa a estrutura UFO com configurações pre-definidas.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void init_ufo(UFO *ufo) {
     ufo->speed = UFO_SPEED;
     ufo->width = UFO_WIDTH;
@@ -51,6 +56,11 @@ void init_ufo(UFO *ufo) {
     ufo->animator = animator;
 }
 
+/**
+ * @brief Aloca memária para a estrutura UFO e retorna um ponteiro para a estrutura criada.
+ * 
+ * @return UFO.
+ */
 UFO * create_ufo() {
     UFO *ufo = (UFO *) malloc(sizeof(UFO));
 
@@ -64,6 +74,13 @@ UFO * create_ufo() {
     return ufo;
 }
 
+/**
+ * @brief Verifica se o UFO saiu dos limites da tela.
+ * 
+ * @param ufo Ponteiro para UFO.
+ * 
+ * @return bool representando se o UFO saiu dos limites da tela.
+ */
 bool is_off_screen(UFO *ufo) {
     if (ufo->mov_dir == MOVE_RIGHT)
         return ufo->pos.x > SCREEN_WIDTH;
@@ -71,6 +88,11 @@ bool is_off_screen(UFO *ufo) {
     return ufo->pos.x + ufo->width < 0;
 }
 
+/**
+ * @brief Define a direção de movimente do UFO e o posiciona.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void spawn_ufo(UFO *ufo) {
     int mov_dir = random_integer(0, 1) == 0 ? MOVE_RIGHT : MOVE_LEFT;
     Point pos = {.x = mov_dir == MOVE_RIGHT ? - ufo->width : SCREEN_WIDTH, 
@@ -80,10 +102,21 @@ void spawn_ufo(UFO *ufo) {
     ufo->pos = pos;
 }
 
+/**
+ * @brief Define quantos pontos o UFO terá.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void set_ufo_points(UFO *ufo) {
     ufo->points = random_integer(2, 10) * UFO_BASE_POINTS;
 }
 
+/**
+ * @brief Ativa a estrutura UFO, posiciona-a na tela, define seus pontos e 
+ * toca seu efeito sonoro.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void active_ufo(UFO *ufo) {
     ufo->is_active = true;
     ufo->speed = UFO_SPEED;
@@ -93,11 +126,22 @@ void active_ufo(UFO *ufo) {
     play_sound(SFX_UFO);
 }
 
+/**
+ * @brief Toca o efeito sonoro de morte para o UFO e o desativa.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void kill_ufo(UFO *ufo) {
     play_sound(SFX_HIT_UFO);
     deactive_ufo(ufo);
 }
 
+/**
+ * @brief Troca o estado lógico do UFO para morte, define o ultimo spawn do UFO e 
+ * reseta o seu efeito sonoro.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void deactive_ufo(UFO *ufo) {
     ufo->is_active = false;
     ufo->last_spawn = al_get_time();
@@ -105,6 +149,12 @@ void deactive_ufo(UFO *ufo) {
     rewind_sound(SFX_UFO);
 }
 
+/**
+ * @brief Lida com o movimento do UFO na horizontal, verifica se 
+ * ele saiu da tela e o desativa caso verdade. 
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void handle_ufo_movement(UFO *ufo) {
     float vx = ufo->mov_dir == MOVE_RIGHT ? ufo->speed : -ufo->speed;
     ufo->pos.x += vx;
@@ -116,10 +166,23 @@ void handle_ufo_movement(UFO *ufo) {
 
 }
 
+/**
+ * @brief Aumenta a valocida do UFO com base no tempo no seu tempo de vida.
+ * 
+ * @param ufo Ponteiro para UFO.
+ * @param delta_time Representa o tempo intervalo entre o spawn do UFO e o momento atual.
+ */
 void increase_ufo_speed(UFO *ufo, double delta_time) {
     ufo->speed += delta_time * UFO_ACCELERATION_RATE;
 }
 
+/**
+ * @brief Verifica se o UFO deve ser posicionado com base no intervalo último o seu último
+ * spawn e o momento atual, se for o caso o ufo e ativado.
+ * 
+ * @param ufo Ponteiro para UFO.
+ * @param delta_time Intervalo de tempo entre o último spwan do UFO e o momento atual.
+ */
 void maybe_spawn_ufo(UFO *ufo, double delta_time) {
     float spawn_change = random_float();
 
@@ -128,11 +191,28 @@ void maybe_spawn_ufo(UFO *ufo, double delta_time) {
         active_ufo(ufo);
 }
 
+/**
+ * @brief Verifica se o ufo está vivo.
+ * 
+ * @param ufo Ponteiro para UFO.
+ * 
+ * @return bool representado se o ufo está vivo ou não.
+ */
+bool is_ufo_alive(UFO *ufo) {
+    return ufo && ufo->is_active;
+}
+
+/**
+ * @brief Faz a atualização do ufo, movimento, animação e velocidade caso ele estiver ativado, se não, verifica 
+ * se ele deve ser ativado.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void update_ufo(UFO *ufo) {
     double now = al_get_time();
     double delta_time = now - ufo->last_spawn;
 
-    if (ufo->is_active) {
+    if (is_ufo_alive(ufo)) {
         if (ufo->speed < UFO_MAX_SPEED) 
             increase_ufo_speed(ufo, delta_time);
          
@@ -144,6 +224,11 @@ void update_ufo(UFO *ufo) {
     maybe_spawn_ufo(ufo, delta_time);   
 }
 
+/**
+ * @brief Desenha o UFO tela, seu sprite e (opcionalmente) sua hitbox. 
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void draw_ufo(UFO *ufo) {
     if (!ufo->is_active) return;
 
@@ -155,6 +240,12 @@ void draw_ufo(UFO *ufo) {
         ufo->animator, ufo->pos.x, ufo->pos.y);
 }
 
+
+/**
+ * @brief Libera os recursos utilizados pelo UFO.
+ * 
+ * @param ufo Ponteiro para UFO.
+ */
 void destroy_ufo(UFO *ufo) {
     if (!ufo) return;
     deactive_ufo(ufo);
