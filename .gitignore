@@ -9,3 +9,6 @@ bin/
 
 # Ignore scores folder
 scores/
+
+# Ignore Doxyfile
+Doxyfile
